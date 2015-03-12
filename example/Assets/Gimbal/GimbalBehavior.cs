@@ -6,11 +6,19 @@ public class GimbalBehavior : MonoBehaviour {
 	public string apiKey;
 	public bool autoStartBeaconManager = true;
 
-	private bool beaconListening;
-	private bool placeListening;
-
 	public delegate void BeaconSightingHandler(BeaconSighting sighting);
 	public event BeaconSightingHandler BeaconSighted = delegate {};
+
+	private bool isListeningForBeacons;
+	private bool isListeningForPlaces;
+
+	public bool IsListeningForBeacons {
+		get { return isListeningForBeacons; }
+	}
+
+	public bool IsListeningForPlaces {
+		get { return isListeningForPlaces; }
+	}
 
 	void Start() {
 		if (gameObject.name != "GimbalPlugin") {
@@ -35,7 +43,7 @@ public class GimbalBehavior : MonoBehaviour {
 	}
 
 	public void ToggleBeaconListening() {
-		if (beaconListening) {
+		if (isListeningForBeacons) {
 			StopBeaconManager();
 		} else {
 			StartBeaconManager();
@@ -44,12 +52,12 @@ public class GimbalBehavior : MonoBehaviour {
 
 	public void StartBeaconManager() {
 		Gimbal.StartBeaconManager();
-		beaconListening = true;
+		isListeningForBeacons = true;
 	}
 
 	public void StopBeaconManager() {
 		Gimbal.StopBeaconManager();
-		beaconListening = false;
+		isListeningForBeacons = false;
 	}
 
 	void OnBeginVisit() {
