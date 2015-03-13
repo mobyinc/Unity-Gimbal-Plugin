@@ -39,6 +39,10 @@ public class GimbalBehavior : MonoBehaviour {
 			StartBeaconManager();
 		}
 
+		if (autoStartPlaceManager) {
+			StartPlaceManager();
+		}
+
 		isListeningForPlaces = autoStartPlaceManager;
 		isListeningForBeacons = autoStartBeaconManager;
 	}

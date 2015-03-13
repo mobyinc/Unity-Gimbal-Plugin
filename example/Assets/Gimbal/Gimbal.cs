@@ -24,7 +24,6 @@ public class Gimbal {
 	}
 
 	public static bool IsMoitoring() {
-		Debug.Log("unity asking for monitoring state");
 		return isMonitoring();
 	}
 

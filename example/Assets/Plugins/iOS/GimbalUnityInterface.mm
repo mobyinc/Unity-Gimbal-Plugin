@@ -140,7 +140,7 @@ const char *_gimbalObjName = "GimbalPlugin";
 -(NSString*)convertDate:(NSDate*) date {
     //If date is nil return empty string
     if (date == nil) {
-        return @"";
+        return @"N/A";
     }
     
     //Convert NSDate to string
@@ -154,11 +154,8 @@ const char *_gimbalObjName = "GimbalPlugin";
 // Unity interface
 extern "C" {
     void setApiKey(const char* apiKey) {
-        
         [[GimbalUnityInterface sharedInstance] setApiKey:[NSString stringWithUTF8String:apiKey]];
-        
         NSLog(@"setting API Key: %s", apiKey);
-        //UnitySendMessage(_gimbalObjName, "OnFoo", "bar");
     }
     
     void startBeaconManager() {
