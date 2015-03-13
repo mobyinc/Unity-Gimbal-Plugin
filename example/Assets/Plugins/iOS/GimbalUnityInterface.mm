@@ -30,10 +30,10 @@ const char *_gimbalObjName = "GimbalPlugin";
     
     UnityRegisterAppDelegateListener(self);
     
-    _beaconManager = [[GMBLBeaconManager alloc] init];
+    _beaconManager = [GMBLBeaconManager new];
     _beaconManager.delegate = self;
     
-    _placeManager = [[GMBLPlaceManager alloc] init];
+    _placeManager = [GMBLPlaceManager new];
     _placeManager.delegate = self;
     
     return self;
@@ -126,11 +126,15 @@ const char *_gimbalObjName = "GimbalPlugin";
 }
 
 -(void)startPlaceManager {
-    [_placeManager startMonitoring];
+    [GMBLPlaceManager startMonitoring];
 }
 
 -(void)stopPlaceManager {
-    [_placeManager stopMonitoring];
+    [GMBLPlaceManager stopMonitoring];
+}
+
+-(BOOL)isMonitoring {
+    return [GMBLPlaceManager isMonitoring];
 }
 
 -(NSString*)convertDate:(NSDate*) date {
@@ -171,6 +175,10 @@ extern "C" {
     
     void stopPlaceManager() {
         [[GimbalUnityInterface sharedInstance] stopPlaceManager];
+    }
+    
+    void isMonitoring() {
+        [[GimbalUnityInterface sharedInstance] isMonitoring];
     }
 }
 

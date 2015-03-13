@@ -27,8 +27,12 @@ public class Gimbal {
 		stopPlaceManager();
 	}
 
-#if UNITY_IPHONE
+	public static bool IsMoitoring() {
+		Debug.Log("unity asking for monitoring state");
+		return isMonitoring();
+	}
 
+#if UNITY_IPHONE
 	[DllImport ("__Internal")]
 	private static extern void setApiKey(string apiKey);
 
@@ -43,6 +47,9 @@ public class Gimbal {
 
 	[DllImport ("__Internal")]
 	private static extern void stopPlaceManager();
+		
+	[DllImport ("__Internal")]
+	private static extern bool isMonitoring();
 #elif UNITY_ANDROID
 	[DllImport("gimbalunitybridge")]
 	private static extern void setApiKey(string apiKey);

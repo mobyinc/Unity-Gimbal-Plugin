@@ -102,4 +102,8 @@ public class GimbalBehavior : MonoBehaviour {
 		isListeningForPlaces = true;
 	}
 
+	public bool IsMonitoring() {
+		return Gimbal.IsMoitoring();
+	}
+
 }
