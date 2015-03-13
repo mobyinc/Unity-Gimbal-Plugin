@@ -38,6 +38,9 @@ public class GimbalBehavior : MonoBehaviour {
 		if (autoStartBeaconManager) {
 			StartBeaconManager();
 		}
+
+		isListeningForPlaces = autoStartPlaceManager;
+		isListeningForBeacons = autoStartBeaconManager;
 	}
 
 	void SetApiKey() {
