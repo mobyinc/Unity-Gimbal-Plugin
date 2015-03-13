@@ -6,8 +6,7 @@ public class Visit {
 	public Place place;
 	public string arrivalDate;
 	public string departureDate;
-
-
+	
 	public Visit(JSONNode node) {
 		Deserialize(node);
 	}

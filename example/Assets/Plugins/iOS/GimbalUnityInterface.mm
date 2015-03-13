@@ -112,7 +112,7 @@ const char *_gimbalObjName = "GimbalPlugin";
                                       @"departureDate": departureDate,
                                       @"place": @{
                                               @"identifier": place.identifier,
-                                              @"name": place.name,
+                                              @"name": place.name
                                               }
                                       };
     //Convert dictionary to json data
