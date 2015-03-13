@@ -11,7 +11,6 @@ public class Beacon {
 
 	public Beacon(JSONNode node) {
 		Deserialize(node);
-		//Debug.Log("Battery Level: " + batteryLevel + " IconURL: " + iconURL + " ID: " + identifier + " Name: " + name + " Temp: " + temperature);
 	}
 
 	private void Deserialize(JSONNode node) {

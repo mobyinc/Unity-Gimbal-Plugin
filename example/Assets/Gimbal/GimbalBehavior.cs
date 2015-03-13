@@ -6,9 +6,16 @@ public class GimbalBehavior : MonoBehaviour {
 	public string iosApiKey;
 	public string androidApiKey;
 	public bool autoStartBeaconManager = true;
+	public bool autoStartPlaceManager = true;
 
 	public delegate void BeaconSightingHandler(BeaconSighting sighting);
 	public event BeaconSightingHandler BeaconSighted = delegate {};
+
+	public delegate void BeginVisitHandler(Visit visit);
+	public event BeginVisitHandler BeginVisit = delegate {};
+
+	public delegate void EndVisitHandler(Visit visit);
+	public event EndVisitHandler EndVisit = delegate {};
 
 	private bool isListeningForBeacons;
 	private bool isListeningForPlaces;
@@ -65,19 +72,34 @@ public class GimbalBehavior : MonoBehaviour {
 		isListeningForBeacons = false;
 	}
 
-	void OnBeginVisit() {
+	void OnBeginVisit(string message) {
+		JSONNode node = JSON.Parse(message);
+		Visit visit = new Visit(node);
+		BeginVisit(visit);
 	}
 
-	void OnEndVisit() {
+	void OnEndVisit(string message) {
+		JSONNode node = JSON.Parse(message);
+		Visit visit = new Visit(node);
+		EndVisit(visit);
 	}
 
 	public void TogglePlaceListening() {
+		if (isListeningForPlaces) {
+			StartPlaceManager();
+		} else {
+			StopPlaceManager();
+		}
 	}
 
 	public void StartPlaceManager() {
+		Gimbal.StartPlaceManager();
+		isListeningForPlaces = false;
 	}
 
 	public void StopPlaceManager() {
+		Gimbal.StopPlaceManager();
+		isListeningForPlaces = true;
 	}
 
 }

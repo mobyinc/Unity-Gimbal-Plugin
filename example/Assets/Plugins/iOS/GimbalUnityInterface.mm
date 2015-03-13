@@ -48,12 +48,8 @@ const char *_gimbalObjName = "GimbalPlugin";
 }
 
 -(void)beaconManager:(GMBLBeaconManager *)manager didReceiveBeaconSighting:(GMBLBeaconSighting *)sighting {
-    //Convert NSDate to string
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterFullStyle];
-    NSDate* date = sighting.date;
-    NSString *dateString = [dateFormatter stringFromDate:date];
-    [dateFormatter release];
+    //Convert sighting date to string
+    NSString *dateString = [self convertDate:sighting.date];
     
     GMBLBeacon* beacon = sighting.beacon;
     
@@ -96,15 +92,37 @@ const char *_gimbalObjName = "GimbalPlugin";
 }
 
 -(void)placeManager:(GMBLPlaceManager *)manager didBeginVisit:(GMBLVisit *)visit {
-    
+    [self placeManagerHelper:visit :@"OnBeginVisit"];
 }
 
 -(void)placeManager:(GMBLPlaceManager *)manager didEndVisit:(GMBLVisit *)visit {
-    
+    [self placeManagerHelper:visit :@"OnEndVisit"];
 }
 
--(void)isMonitoring {
+-(void)placeManagerHelper:(GMBLVisit*) visit :(NSString*) unityMethod {
+    //Convert vist arival and departure dates to strings
+    NSString *arrivalDate = [self convertDate:visit.arrivalDate];
+    NSString *departureDate = [self convertDate:visit.departureDate];
     
+    GMBLPlace* place = visit.place;
+    
+    //Create dictionary for visit values
+    NSDictionary* visitDictionary = @{
+                                      @"arrivalDate": arrivalDate,
+                                      @"departureDate": departureDate,
+                                      @"place": @{
+                                              @"identifier": place.identifier,
+                                              @"name": place.name,
+                                              }
+                                      };
+    //Convert dictionary to json data
+    NSData* JSONData = [NSJSONSerialization dataWithJSONObject:visitDictionary options:NSJSONReadingMutableContainers error:nil];
+    
+    //Convert json data to string
+    NSString* JSONString = [[NSString alloc] initWithBytes:[JSONData bytes] length:[JSONData length] encoding:NSUTF8StringEncoding];
+    
+    //Pass json data to unity game object
+    UnitySendMessage(_gimbalObjName, [unityMethod UTF8String], [JSONString UTF8String]);
 }
 
 -(void)startPlaceManager {
@@ -115,8 +133,21 @@ const char *_gimbalObjName = "GimbalPlugin";
     [_placeManager stopMonitoring];
 }
 
-// Unity interface
+-(NSString*)convertDate:(NSDate*) date {
+    //If date is nil return empty string
+    if (date == nil) {
+        return @"";
+    }
+    
+    //Convert NSDate to string
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterFullStyle];
+    NSString *dateString = [dateFormatter stringFromDate:date];
+    [dateFormatter release];
+    return dateString;
+}
 
+// Unity interface
 extern "C" {
     void setApiKey(const char* apiKey) {
         
