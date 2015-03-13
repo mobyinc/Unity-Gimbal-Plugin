@@ -3,7 +3,8 @@ using System.Collections;
 using SimpleJSON;
 
 public class GimbalBehavior : MonoBehaviour {
-	public string apiKey;
+	public string iosApiKey;
+	public string androidApiKey;
 	public bool autoStartBeaconManager = true;
 
 	public delegate void BeaconSightingHandler(BeaconSighting sighting);
@@ -33,7 +34,11 @@ public class GimbalBehavior : MonoBehaviour {
 	}
 
 	void SetApiKey() {
-		Gimbal.SetApiKey(apiKey);
+#if UNITY_IPHONE
+		Gimbal.SetApiKey(iosApiKey);
+#elif UNITY_ANDROID
+		Gimbal.SetApiKey(androidApiKey);
+#endif
 	}
 	
 	void OnBeaconSighting(string message) {

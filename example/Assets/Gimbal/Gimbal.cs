@@ -27,6 +27,8 @@ public class Gimbal {
 		stopPlaceManager();
 	}
 
+#if UNITY_IPHONE
+
 	[DllImport ("__Internal")]
 	private static extern void setApiKey(string apiKey);
 
@@ -41,4 +43,20 @@ public class Gimbal {
 
 	[DllImport ("__Internal")]
 	private static extern void stopPlaceManager();
+#elif UNITY_ANDROID
+	[DllImport("gimbalunitybridge")]
+	private static extern void setApiKey(string apiKey);
+	
+	[DllImport("gimbalunitybridge")]
+	private static extern void startBeaconManager();
+	
+	[DllImport("gimbalunitybridge")]
+	private static extern void stopBeaconManager();
+	
+	[DllImport("gimbalunitybridge")]
+	private static extern void startPlaceManager();
+	
+	[DllImport("gimbalunitybridge")]
+	private static extern void stopPlaceManager();
+#endif
 }
