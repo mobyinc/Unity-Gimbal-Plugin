@@ -4,24 +4,50 @@ import android.app.Activity;
 import android.util.Log;
 import java.io.File;
 
+import com.gimbal.android.Gimbal;
+import com.gimbal.android.PlaceManager;
+import com.gimbal.android.PlaceEventListener;
+import com.gimbal.android.Place;
+import com.gimbal.android.Visit;
+import com.gimbal.android.BeaconEventListener;
+import com.gimbal.android.BeaconManager;
+import com.gimbal.android.BeaconSighting;
+
 public class GimbalUnityInterface
 {
-	private Activity mActivity;
+	private Activity activity;
+	private PlaceEventListener placeEventListener;
+	private BeaconEventListener beaconSightingListener;
+	private BeaconManager beaconManager;
+
 	public GimbalUnityInterface(Activity currentActivity)
 	{
 		Log.i("GimbalUnityInterface", "Constructor called with currentActivity = " + currentActivity);
-		mActivity = currentActivity;
+		activity = currentActivity;
+
+		beaconSightingListener = new BeaconEventListener() {
+      @Override
+      public void onBeaconSighting(BeaconSighting sighting) {
+        Log.i("INFO", sighting.toString());
+      }
+    };
+
+    beaconManager = new BeaconManager();
+    beaconManager.addListener(beaconSightingListener);
 	}
-	
-	// we could of course do this straight from native code using JNI, but this is an example so.. ;)
-	public String getActivityCacheDir()
+
+	public void setApiKey(String apiKey)
 	{
-		// calling Context.getCacheDir();
-		// http://developer.android.com/reference/android/content/Context.html#getCacheDir()
-		//
-		File cacheDir = mActivity.getCacheDir();
-		String path = cacheDir.getPath();
-		Log.i("GimbalUnityInterface", "getActivityCacheDir returns = " + path);
-		return path;
+		Gimbal.setApiKey(activity.getApplication(), apiKey);
+	}
+
+	public void startBeaconManager()
+	{
+
+	}
+
+	public void stopBeaconManager()
+	{
+
 	}
 }

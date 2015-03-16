@@ -60,5 +60,8 @@ public class Gimbal {
 	
 	[DllImport("gimbalunitybridge")]
 	private static extern void stopPlaceManager();
+
+	[DllImport("gimbalunitybridge")]
+	private static extern bool isMonitoring();
 #endif
 }
