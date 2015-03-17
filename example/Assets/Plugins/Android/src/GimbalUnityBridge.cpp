@@ -7,7 +7,13 @@ extern "C"
 
 JavaVM*		java_vm;
 jobject		JavaClass;
-jmethodID	getActivityCacheDir;
+jmethodID 	setApiKeyJ;
+jmethodID	startBeaconManagerJ;
+jmethodID	stopBeaconManagerJ;
+jmethodID	startPlaceManagerJ;
+jmethodID	stopPlaceManagerJ;
+jmethodID	isMonitoringJ;
+
 
 jint JNI_OnLoad(JavaVM* vm, void* reserved)
 {
@@ -31,31 +37,51 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 
 	// create a global reference to the JavaClass object and fetch method id(s)..
 	JavaClass			= jni_env->NewGlobalRef(obj_JavaClass);
-	getActivityCacheDir	= jni_env->GetMethodID(cls_JavaClass, "getActivityCacheDir", "()Ljava/lang/String;");
+	setApiKeyJ 			= jni_env->GetMethodID(cls_JavaClass, "setApiKey", "(Ljava/lang/String;)V");
+	startBeaconManagerJ = jni_env->GetMethodID(cls_JavaClass, "startBeaconManager", "()V");
+	stopBeaconManagerJ  = jni_env->GetMethodID(cls_JavaClass, "stopBeaconManager", "()V");
+	startPlaceManagerJ  = jni_env->GetMethodID(cls_JavaClass, "startPlaceManager", "()V");
+	stopPlaceManagerJ   = jni_env->GetMethodID(cls_JavaClass, "stopPlaceManager", "()V");
+	isMonitoringJ		= jni_env->GetMethodID(cls_JavaClass, "isMonitoring", "()B");
 
 	return JNI_VERSION_1_6;		// minimum JNI version
 }
 
-char* cacheDir = 0;
-const char* getCacheDir()
-{
-	if (cacheDir)
-		return cacheDir;
-
+void setApiKey(char* apiKey){
 	JNIEnv* jni_env = 0;
 	java_vm->AttachCurrentThread(&jni_env, 0);
-
-	jstring str_cacheDir 	= (jstring)jni_env->CallObjectMethod(JavaClass, getActivityCacheDir);
-
-	jsize stringLen = jni_env->GetStringUTFLength(str_cacheDir);
-
-	cacheDir = new char[stringLen+1];
-
-	const char* path = jni_env->GetStringUTFChars(str_cacheDir, 0);
-
-	strcpy(cacheDir, path);
-
-	return cacheDir;
+	jstring jApiKey = jni_env->NewStringUTF(apiKey);
+	jni_env->CallVoidMethod(JavaClass, setApiKeyJ, jApiKey);
 }
+
+void startBeaconManager() {
+	JNIEnv* jni_env = 0;
+	java_vm->AttachCurrentThread(&jni_env, 0);
+	jni_env->CallVoidMethod(JavaClass, startBeaconManagerJ);
+}
+
+void stopBeaconManager() {
+	JNIEnv* jni_env = 0;
+	java_vm->AttachCurrentThread(&jni_env, 0);
+	jni_env->CallVoidMethod(JavaClass, stopBeaconManagerJ);
+}
+
+// void startPlaceManager() {
+// 	JNIEnv* jni_env = 0;
+// 	java_vm->AttachCurrentThread(&jni_env, 0);
+// 	jni_env->CallVoidMethod(JavaClass, startPlaceManagerJ);
+// }
+
+// void stopPlaceManager() {
+// 	JNIEnv* jni_env = 0;
+// 	java_vm->AttachCurrentThread(&jni_env, 0);
+// 	jni_env->CallVoidMethod(JavaClass, stopPlaceManagerJ);
+// }
+
+// bool isMonitoring() {
+// 	JNIEnv* jni_env = 0;
+// 	java_vm->AttachCurrentThread(&jni_env, 0);
+// 	return jni_env->CallObjectMethod(JavaClass, isMonitoringJ);
+// }
 
 } // extern "C"

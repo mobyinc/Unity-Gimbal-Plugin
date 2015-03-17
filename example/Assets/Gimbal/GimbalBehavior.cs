@@ -112,5 +112,4 @@ public class GimbalBehavior : MonoBehaviour {
 	public bool IsMonitoring() {
 		return Gimbal.IsMoitoring();
 	}
-
 }
