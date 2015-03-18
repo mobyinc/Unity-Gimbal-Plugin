@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -29,7 +30,7 @@ public class ExampleSceneController : MonoBehaviour {
 	void Update () {
 		beaconsFoundText.text = "Beacons:";
 		foreach (BeaconSighting sighting in sightings.Values) {
-			beaconsFoundText.text += "\nName: " + sighting.beacon.name + "\t Identifier: " + sighting.beacon.identifier + "\t RSSI: " + sighting.rssi;
+			beaconsFoundText.text += "\nName: " + sighting.beacon.name + "\t Identifier: " + sighting.beacon.identifier + "\t RSSI: " + sighting.rssi + "\t Date: " + sighting.date;
 		}
 
 		placesVisitingText.text = "Visiting:";

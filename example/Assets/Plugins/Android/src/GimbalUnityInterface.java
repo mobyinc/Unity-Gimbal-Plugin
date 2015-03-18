@@ -57,6 +57,7 @@ public class GimbalUnityInterface
 
 	public void startBeaconManager()
 	{	
+		
 		if (beaconManager != null) {
 			beaconManager.startListening();	
 		} else {

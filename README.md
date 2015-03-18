@@ -64,6 +64,16 @@ The beacon associated with the beacon sighting.
         Beacon beacon = sighting.beacon;
     }
 
+#### date
+
+Type: DateTime
+
+The date that this beacon sighting was found.
+
+    private void BeaconSightingFound(BeaconSighting sighting) {
+        Beacon beacon = sighting.date;
+    }
+
 ### Beacon Properties
 
 #### batteryLevel
@@ -119,7 +129,7 @@ The temperature detected by the beacon.
 ### Setting up Visit events
 
     void Start() {
-        //Create event listeners for begining and ending visits
+        //Create event listeners for visits
         gimbalBehavior.BeginVisit += new GimbalBehavior.BeginVisitHandler(StartedPlaceVisit);
         gimbalBehavior.EndVisit += new GimbalBehavior.EndVisitHandler(EndedPlaceVisit);
     }
@@ -149,7 +159,7 @@ The place associated with the visit
 
 #### arrivalDate
 
-Type: string
+Type: DateTime
 
 The arrival date associated with the visit.
 
@@ -159,9 +169,9 @@ The arrival date associated with the visit.
 
 #### departureDate
 
-Type: string
+Type: DateTime
 
-The departure date associated with the visit
+The departure date associated with the visit. This value can equal null if the visit hasn't ended.
 
     private void StartedPlaceVisit(Visit visit) {
         string departureDate = visit.departureDate;
