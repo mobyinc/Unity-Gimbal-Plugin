@@ -47,6 +47,16 @@ jint JNI_OnLoad(JavaVM* vm, void* reserved)
 	return JNI_VERSION_1_6;		// minimum JNI version
 }
 
+// void JNICALL JNI_FUNCTION(AndroidActivity_nativeInit)(JNIEnv* env, jobject obj, int width, int height) {
+//     // ...
+//     gCallbackObject = (*env)->NewGlobalRef(env, obj);
+// }
+
+// void JNICALL JNI_FUNCTION(AndroidActivity_nativeRelease)(JNIEnv* env, jobject obj) {
+//     (*env)->DeleteGlobalRef(env, gCallbackObject);
+//     gCallbackObject = NULL;
+// }
+
 void setApiKey(char* apiKey){
 	JNIEnv* jni_env = 0;
 	java_vm->AttachCurrentThread(&jni_env, 0);
@@ -66,22 +76,22 @@ void stopBeaconManager() {
 	jni_env->CallVoidMethod(JavaClass, stopBeaconManagerJ);
 }
 
-// void startPlaceManager() {
-// 	JNIEnv* jni_env = 0;
-// 	java_vm->AttachCurrentThread(&jni_env, 0);
-// 	jni_env->CallVoidMethod(JavaClass, startPlaceManagerJ);
-// }
+void startPlaceManager() {
+	JNIEnv* jni_env = 0;
+	java_vm->AttachCurrentThread(&jni_env, 0);
+	jni_env->CallVoidMethod(JavaClass, startPlaceManagerJ);
+}
 
-// void stopPlaceManager() {
-// 	JNIEnv* jni_env = 0;
-// 	java_vm->AttachCurrentThread(&jni_env, 0);
-// 	jni_env->CallVoidMethod(JavaClass, stopPlaceManagerJ);
-// }
+void stopPlaceManager() {
+	JNIEnv* jni_env = 0;
+	java_vm->AttachCurrentThread(&jni_env, 0);
+	jni_env->CallVoidMethod(JavaClass, stopPlaceManagerJ);
+}
 
-// bool isMonitoring() {
-// 	JNIEnv* jni_env = 0;
-// 	java_vm->AttachCurrentThread(&jni_env, 0);
-// 	return jni_env->CallObjectMethod(JavaClass, isMonitoringJ);
-// }
+bool isMonitoring() {
+	JNIEnv* jni_env = 0;
+	java_vm->AttachCurrentThread(&jni_env, 0);
+	return jni_env->CallObjectMethod(JavaClass, isMonitoringJ);
+}
 
 } // extern "C"

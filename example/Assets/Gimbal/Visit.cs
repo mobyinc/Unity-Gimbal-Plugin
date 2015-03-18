@@ -9,7 +9,6 @@ public class Visit {
 	
 	public Visit(JSONNode node) {
 		Deserialize(node);
-		Debug.Log(arrivalDate);
 	}
 	
 	private void Deserialize(JSONNode node) {

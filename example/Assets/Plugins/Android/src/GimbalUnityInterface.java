@@ -21,7 +21,9 @@ public class GimbalUnityInterface
 	private BeaconManager beaconManager;
 
 	public GimbalUnityInterface(Activity currentActivity)
-	{	
+	{		    
+		Log.i("GimbalUnityInterface", "Constructor called with currentActivity = " + currentActivity);
+		activity = currentActivity;
 
 		beaconSightingListener = new BeaconEventListener() {
 	      @Override
@@ -32,23 +34,19 @@ public class GimbalUnityInterface
 
 	    beaconManager = new BeaconManager();
 	    beaconManager.addListener(beaconSightingListener);
-	    
-		Log.i("GimbalUnityInterface", "Constructor called with currentActivity = " + currentActivity);
-		activity = currentActivity;
 
-		// placeEventListener = new PlaceEventListener() {
-		// 	@Override
-		// 	public void onVisitStart(Visit visit) {
-		// 		Log.i("INFO", visit.toString());
-		// 	}
+		placeEventListener = new PlaceEventListener() {
+			@Override
+			public void onVisitStart(Visit visit) {
+				Log.i("INFO", visit.toString());
+			}
 
-		// 	@Override
-		// 	public void onVisitEnd(Visit visit) {
-		// 		Log.i("INFO", visit.toString());
-		// 	}
-		// };
-
-		// PlaceManager.getInstance().addListener(placeEventListener);
+			@Override
+			public void onVisitEnd(Visit visit) {
+				Log.i("INFO", visit.toString());
+			}
+		};
+		PlaceManager.getInstance().addListener(placeEventListener);
 	}
 
 	public void setApiKey(String apiKey)
@@ -58,30 +56,35 @@ public class GimbalUnityInterface
 	}
 
 	public void startBeaconManager()
-	{
-		Log.i("Starting", "Starting Beacon Manager");
-		beaconManager.startListening();
+	{	
+		if (beaconManager != null) {
+			beaconManager.startListening();	
+		} else {
+			Log.i("Starting", "Null beaconManager");
+		}
 	}
 
 	public void stopBeaconManager()
 	{
-		Log.i("Stopping", "Stopping Beacon Manager");
-		beaconManager.stopListening();
+		if (beaconManager != null) {
+			beaconManager.stopListening();	
+		} else {
+			Log.i("Stopping", "Null beaconManager");
+		}
 	}
 
 	public void startPlaceManager() 
 	{
-		// PlaceManager.getInstance().startMonitoring();
+		PlaceManager.getInstance().startMonitoring();
 	}
 
 	public void stopPlaceManager()
 	{
-		// PlaceManager.getInstance().stopMonitoring();
+		PlaceManager.getInstance().stopMonitoring();
 	}
 
 	public boolean isMonitoring()
 	{
-		// return PlaceManager.getInstance().isMonitoring();
-		return true;
+		return PlaceManager.getInstance().isMonitoring();
 	} 
 }

@@ -3,7 +3,7 @@
 echo ""
 echo "Building Interface..."
 # javac GimbalUnityInterface.java -bootclasspath $ANDROID_SDK_ROOT/platforms/android-21/android.jar -d .
-/Library/Java/JavaVirtualMachines/1.6.0_65-b14-462.jdk/Contents/Home/bin/javac GimbalUnityInterface.java -cp "$ANDROID_SDK_ROOT/platforms/android-21/android.jar:../gimbal.jar:gimbal-dev-logging.jar:spring-android-core-1.0.1.RELEASE.jar:spring-android-rest-template-1.0.1.RELEASE.jar" -d .
+/Library/Java/JavaVirtualMachines/1.6.0_65-b14-462.jdk/Contents/Home/bin/javac GimbalUnityInterface.java -cp "$ANDROID_SDK_ROOT/platforms/android-21/android.jar:$ANDROID_SDK_ROOT/extras/android/support/v4/android-support-v4.jar:../gimbal.jar:gimbal-dev-logging.jar:spring-android-core-1.0.1.RELEASE.jar:spring-android-rest-template-1.0.1.RELEASE.jar" -d .
 # javac GimbalUnityInterface.java -cp "$ANDROID_SDK_ROOT/platforms/android-21/android.jar:../gimbal.jar:gimbal-dev-logging.jar:spring-android-core-1.0.1.RELEASE.jar:spring-android-rest-template-1.0.1.RELEASE.jar" -d .
 
 echo ""

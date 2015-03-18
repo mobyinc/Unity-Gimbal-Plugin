@@ -18,12 +18,11 @@ public class ExampleSceneController : MonoBehaviour {
 	private Dictionary<string, Visit> endedVisits = new Dictionary<string, Visit>();
 
 	void Start () {
-
 		gimbalBehavior.BeaconSighted += new GimbalBehavior.BeaconSightingHandler(BeaconSightingFound);
-//		gimbalBehavior.BeginVisit += new GimbalBehavior.BeginVisitHandler(StartedPlaceVisit);
-//		gimbalBehavior.EndVisit += new GimbalBehavior.EndVisitHandler(EndedPlaceVisit);
-//
-//		placeStatusText.text = "Place Sighting: " + updateStatusText(gimbalBehavior.autoStartPlaceManager);
+		gimbalBehavior.BeginVisit += new GimbalBehavior.BeginVisitHandler(StartedPlaceVisit);
+		gimbalBehavior.EndVisit += new GimbalBehavior.EndVisitHandler(EndedPlaceVisit);
+
+		placeStatusText.text = "Place Sighting: " + updateStatusText(gimbalBehavior.autoStartPlaceManager);
 		beaconStatusText.text = "Beacon Sighting: " + updateStatusText(gimbalBehavior.autoStartBeaconManager);
 	}
 
@@ -32,12 +31,12 @@ public class ExampleSceneController : MonoBehaviour {
 		foreach (BeaconSighting sighting in sightings.Values) {
 			beaconsFoundText.text += "\nName: " + sighting.beacon.name + "\t Identifier: " + sighting.beacon.identifier + "\t RSSI: " + sighting.rssi;
 		}
-//
-//		placesVisitingText.text = "Visiting:";
-//		updateVisitTextHelper(placesVisitingText, currentVisits);
-//
-//		placesVisitedText.text = "Visited:";
-//		updateVisitTextHelper(placesVisitedText, endedVisits);
+
+		placesVisitingText.text = "Visiting:";
+		updateVisitTextHelper(placesVisitingText, currentVisits);
+
+		placesVisitedText.text = "Visited:";
+		updateVisitTextHelper(placesVisitedText, endedVisits);
 
 	}
 
