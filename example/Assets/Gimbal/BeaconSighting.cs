@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using SimpleJSON;
+using System.Globalization;
 
 public class BeaconSighting {
 	public Beacon beacon;
@@ -19,6 +20,6 @@ public class BeaconSighting {
 	}
 
 	private DateTime dateConverter(string date) {
-		return Convert.ToDateTime(date);
+		return DateTime.ParseExact(date, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
 	}
 }

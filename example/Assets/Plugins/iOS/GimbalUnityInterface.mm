@@ -145,7 +145,7 @@ const char *_gimbalObjName = "GimbalPlugin";
     
     //Convert NSDate to string
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+    [dateFormatter setDateFormat:@"MM/dd/yyyy HH:mm:ss"];
     NSString *dateString = [dateFormatter stringFromDate:date];
     [dateFormatter release];
     return dateString;

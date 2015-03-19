@@ -2,6 +2,7 @@
 using System.Collections;
 using SimpleJSON;
 using System;
+using System.Globalization;
 
 public class Visit {
 	public Place place;
@@ -18,7 +19,7 @@ public class Visit {
 	}
 
 	private DateTime arrivalDateConverter(string date) {
-		return Convert.ToDateTime(date);
+		return DateTime.ParseExact(date, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);;
 	}
 
 	private void departureDateConverter(string date) {
