@@ -102,6 +102,9 @@ public class GimbalUnityInterface
 	}
 
 	private String convertDate(Long date) {
+		if (date == null) {
+			return "N/A";
+		}
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		String stringDate = df.format(date);
 		return stringDate;
