@@ -21,6 +21,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.unity3d.player.UnityPlayerActivity;
+import com.unity3d.player.UnityPlayer;
+
 public class GimbalUnityInterface
 {
 	private Activity activity;
@@ -54,6 +57,7 @@ public class GimbalUnityInterface
 		        	jsonObj.put("beacon", jsonAdd);
 
 		        	String jsonString = jsonObj.toString();
+					com.unity3d.player.UnityPlayer.UnitySendMessage("GimbalPlugin", "OnBeaconSighting", jsonString);
 	      		}
 	      		catch (JSONException ex) {
 	      			ex.printStackTrace();
@@ -67,12 +71,12 @@ public class GimbalUnityInterface
 		placeEventListener = new PlaceEventListener() {
 			@Override
 			public void onVisitStart(Visit visit) {
-				placeManagerHelper(visit, "unityMethod");
+				placeManagerHelper(visit, "OnBeginVisit");
 			}
 
 			@Override
 			public void onVisitEnd(Visit visit) {
-				placeManagerHelper(visit, "unityMethod");
+				placeManagerHelper(visit, "OnEndVisit");
 			}
 		};
 		PlaceManager.getInstance().addListener(placeEventListener);
@@ -94,7 +98,7 @@ public class GimbalUnityInterface
 			jsonObj.put("place", jsonAdd);
 
 			String jsonString = jsonObj.toString();
-			//com.unity3d.player.UnityPlayer.UnitySendMessage("Name", "MethodName", "Parameter");
+			com.unity3d.player.UnityPlayer.UnitySendMessage("GimbalPlugin", unityMethod, jsonString);
 		}
 		catch (JSONException ex) {
 	      	ex.printStackTrace();
