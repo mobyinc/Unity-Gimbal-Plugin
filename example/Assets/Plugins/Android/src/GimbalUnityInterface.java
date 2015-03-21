@@ -26,121 +26,152 @@ import com.unity3d.player.UnityPlayer;
 
 public class GimbalUnityInterface
 {
-	private Activity activity;
-	private PlaceEventListener placeEventListener;
-	private BeaconEventListener beaconSightingListener;
-	private BeaconManager beaconManager;
+  private Activity activity;
+  private PlaceEventListener placeEventListener;
+  private BeaconEventListener beaconSightingListener;
+  private BeaconManager beaconManager;
 
-	public GimbalUnityInterface(Activity currentActivity)
-	{		    
-		Log.i("GimbalUnityInterface", "Constructor called with currentActivity = " + currentActivity);
-		activity = currentActivity;
+  public GimbalUnityInterface(Activity currentActivity)
+  {
+    Log.i("GimbalUnityInterface", "currentActivity = " + currentActivity);
+    activity = currentActivity;
 
-		beaconSightingListener = new BeaconEventListener() {
-	    	@Override
-	    	public void onBeaconSighting(BeaconSighting sighting) {
-	      		try {
-	      			String dateString = convertDate(sighting.getTimeInMillis());
+    placeEventListener = new PlaceEventListener() {
+      @Override
+      public void onVisitStart(Visit visit) {
+        placeManagerHelper(visit, "OnBeginVisit");
+      }
 
-		      		JSONObject jsonObj = new JSONObject();
-		        	jsonObj.put("RSSI", String.valueOf(sighting.getRSSI()));
-		        	jsonObj.put("date", dateString);
+      @Override
+      public void onVisitEnd(Visit visit) {
+        placeManagerHelper(visit, "OnEndVisit");
+      }
+    };
 
-		        	Beacon beacon = sighting.getBeacon();
-		        	JSONObject jsonAdd = new JSONObject();
-		        	jsonAdd.put("batteryLevel", String.valueOf(beacon.getBatteryLevel()));
-		        	jsonAdd.put("icontURL", beacon.getIconURL());
-		        	jsonAdd.put("identifier", beacon.getIdentifier());
-		        	jsonAdd.put("name", beacon.getName());
-		        	jsonAdd.put("temperature", String.valueOf(beacon.getTemperature()));
+    beaconSightingListener = new BeaconEventListener() {
+      @Override
+      public void onBeaconSighting(BeaconSighting sighting) {
+        Log.i("GimbalUnityInterface", "sighting!");
 
-		        	jsonObj.put("beacon", jsonAdd);
+        try {
+          String dateString = convertDate(sighting.getTimeInMillis());
 
-		        	String jsonString = jsonObj.toString();
-					com.unity3d.player.UnityPlayer.UnitySendMessage("GimbalPlugin", "OnBeaconSighting", jsonString);
-	      		}
-	      		catch (JSONException ex) {
-	      			ex.printStackTrace();
-	      		}
-	      	}
-	    };
+          JSONObject jsonObj = new JSONObject();
+          jsonObj.put("RSSI", String.valueOf(sighting.getRSSI()));
+          jsonObj.put("date", dateString);
 
-	    beaconManager = new BeaconManager();
-	    beaconManager.addListener(beaconSightingListener);
+          Beacon beacon = sighting.getBeacon();
+          JSONObject jsonAdd = new JSONObject();
+          jsonAdd.put("batteryLevel", String.valueOf(beacon.getBatteryLevel()));
+          jsonAdd.put("icontURL", beacon.getIconURL());
+          jsonAdd.put("identifier", beacon.getIdentifier());
+          jsonAdd.put("name", beacon.getName());
+          jsonAdd.put("temperature", String.valueOf(beacon.getTemperature()));
 
-		placeEventListener = new PlaceEventListener() {
-			@Override
-			public void onVisitStart(Visit visit) {
-				placeManagerHelper(visit, "OnBeginVisit");
-			}
+          jsonObj.put("beacon", jsonAdd);
 
-			@Override
-			public void onVisitEnd(Visit visit) {
-				placeManagerHelper(visit, "OnEndVisit");
-			}
-		};
-		PlaceManager.getInstance().addListener(placeEventListener);
-	}
+          String jsonString = jsonObj.toString();
+          //com.unity3d.player.UnityPlayer.UnitySendMessage("GimbalPlugin", "OnBeaconSighting", jsonString);
+        }
+        catch (JSONException ex) {
+          ex.printStackTrace();
+        }
+      }
+    };
+  }
 
-	private void placeManagerHelper(Visit visit, String unityMethod) {
-		try {
-			String arrivalDate = convertDate(visit.getArrivalTimeInMillis());
-			String departureDate = convertDate(visit.getDepartureTimeInMillis());
-			JSONObject jsonObj = new JSONObject();
-			jsonObj.put("arrivalDate", arrivalDate);
-	        jsonObj.put("departureDate", departureDate);
+  private void placeManagerHelper(Visit visit, String unityMethod) {
+    try {
+      String arrivalDate = convertDate(visit.getArrivalTimeInMillis());
+      String departureDate = convertDate(visit.getDepartureTimeInMillis());
+      JSONObject jsonObj = new JSONObject();
+      jsonObj.put("arrivalDate", arrivalDate);
+      jsonObj.put("departureDate", departureDate);
 
-			Place place = visit.getPlace();
-			JSONObject jsonAdd = new JSONObject();
-			jsonAdd.put("identifier", place.getIdentifier());
-			jsonAdd.put("name", place.getName());
+      Place place = visit.getPlace();
+      JSONObject jsonAdd = new JSONObject();
+      jsonAdd.put("identifier", place.getIdentifier());
+      jsonAdd.put("name", place.getName());
 
-			jsonObj.put("place", jsonAdd);
+      jsonObj.put("place", jsonAdd);
 
-			String jsonString = jsonObj.toString();
-			com.unity3d.player.UnityPlayer.UnitySendMessage("GimbalPlugin", unityMethod, jsonString);
-		}
-		catch (JSONException ex) {
-	      	ex.printStackTrace();
-	    }
-	}
+      String jsonString = jsonObj.toString();
+      com.unity3d.player.UnityPlayer.UnitySendMessage("GimbalPlugin", unityMethod, jsonString);
+    }
+    catch (JSONException ex) {
+      ex.printStackTrace();
+    }
+  }
 
-	private String convertDate(Long date) {
-		if (date == null) {
-			return "N/A";
-		}
-		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-		String stringDate = df.format(date);
-		return stringDate;
-	}
+  private String convertDate(Long date) {
+    if (date == null) {
+      return "N/A";
+    }
+    DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+    String stringDate = df.format(date);
+    return stringDate;
+  }
 
-		public void setApiKey(String apiKey)
-	{
-		Gimbal.setApiKey(activity.getApplication(), apiKey);
-	}
+  public void setApiKey(final String apiKey)
+  {
+    Log.i("GimbalUnityInterface", "Set API Key");
 
-	public void startBeaconManager()
-	{	
-		beaconManager.startListening();	
-	}
+    activity.runOnUiThread(new Runnable() {
+      public void run() {
+        Log.i("GimbalUnityInterface", "Set API Key!!!");
+        Gimbal.setApiKey(activity.getApplication(), apiKey);
 
-	public void stopBeaconManager()
-	{
-		beaconManager.stopListening();
-	}
+        beaconManager = new BeaconManager();
+        beaconManager.addListener(beaconSightingListener);
 
-	public void startPlaceManager() 
-	{
-		PlaceManager.getInstance().startMonitoring();
-	}
+        PlaceManager.getInstance().addListener(placeEventListener);
+      }
+    });
+  }
 
-	public void stopPlaceManager()
-	{
-		PlaceManager.getInstance().stopMonitoring();
-	}
+  public void startBeaconManager()
+  {
+    Log.i("GimbalUnityInterface", "Starting...");
 
-	public boolean isMonitoring()
-	{
-		return PlaceManager.getInstance().isMonitoring();
-	} 
+    if (beaconManager != null) {
+      Log.i("GimbalUnityInterface", "Starting!!!");
+      beaconManager.startListening();
+    }
+  }
+
+  public void stopBeaconManager()
+  {
+    Log.i("GimbalUnityInterface", "Stop ");
+
+    if (beaconManager != null) {
+      beaconManager.stopListening();
+    }
+  }
+
+  public void startPlaceManager()
+  {
+    Log.i("GimbalUnityInterface", "Start Places");
+
+    activity.runOnUiThread(new Runnable() {
+      public void run() {
+        PlaceManager.getInstance().startMonitoring();
+      }
+    });
+  }
+
+  public void stopPlaceManager()
+  {
+    Log.i("GimbalUnityInterface", "Stop Places");
+
+    activity.runOnUiThread(new Runnable() {
+      public void run() {
+        PlaceManager.getInstance().stopMonitoring();
+      }
+    });
+  }
+
+  public boolean isMonitoring()
+  {
+    return PlaceManager.getInstance().isMonitoring();
+  }
 }
