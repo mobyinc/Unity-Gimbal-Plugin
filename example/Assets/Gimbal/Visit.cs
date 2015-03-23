@@ -2,7 +2,6 @@
 using System.Collections;
 using SimpleJSON;
 using System;
-using System.Globalization;
 
 public class Visit {
 	public Place place;
@@ -15,18 +14,6 @@ public class Visit {
 	
 	private void Deserialize(JSONNode node) {
 		place = new Place(node["place"]);
-		arrivalDate = arrivalDateConverter(node["arrivalDate"].Value);
+		arrivalDate = Gimbal.ConvertJsonDate(node["arrivalDate"].Value);
 	}
-
-	private DateTime arrivalDateConverter(string date) {
-		return DateTime.ParseExact(date, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);;
-	}
-
-	private void departureDateConverter(string date) {
-		if (date.Equals("N/A")) {
-			departureDate = null;
-		} else {
-			departureDate = arrivalDateConverter(date);
-		}
-	}                                        
 }

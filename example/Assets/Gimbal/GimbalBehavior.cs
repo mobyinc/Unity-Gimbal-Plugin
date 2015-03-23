@@ -44,20 +44,6 @@ public class GimbalBehavior : MonoBehaviour {
 		}
 	}
 
-	void SetApiKey() {
-#if UNITY_IPHONE
-		Gimbal.SetApiKey(iosApiKey);
-#elif UNITY_ANDROID
-		Gimbal.SetApiKey(androidApiKey);
-#endif
-	}
-	
-	void OnBeaconSighting(string message) {
-		JSONNode node = JSON.Parse(message);
-		BeaconSighting beaconSighting = new BeaconSighting(node);
-		BeaconSighted(beaconSighting);
-	}
-
 	public void ToggleBeaconListening() {
 		if (isListeningForBeacons) {
 			StopBeaconManager();
@@ -70,22 +56,10 @@ public class GimbalBehavior : MonoBehaviour {
 		Gimbal.StartBeaconManager();
 		isListeningForBeacons = true;
 	}
-
+	
 	public void StopBeaconManager() {
 		Gimbal.StopBeaconManager();
 		isListeningForBeacons = false;
-	}
-
-	void OnBeginVisit(string message) {
-		JSONNode node = JSON.Parse(message);
-		Visit visit = new Visit(node);
-		BeginVisit(visit);
-	}
-
-	void OnEndVisit(string message) {
-		JSONNode node = JSON.Parse(message);
-		Visit visit = new Visit(node);
-		EndVisit(visit);
 	}
 
 	public void TogglePlaceListening() {
@@ -100,13 +74,39 @@ public class GimbalBehavior : MonoBehaviour {
 		Gimbal.StartPlaceManager();
 		isListeningForPlaces = false;
 	}
-
+	
 	public void StopPlaceManager() {
 		Gimbal.StopPlaceManager();
 		isListeningForPlaces = true;
 	}
-
+	
 	public bool IsMonitoring() {
 		return Gimbal.IsMoitoring();
+	}
+
+	void SetApiKey() {
+#if UNITY_IPHONE
+		Gimbal.SetApiKey(iosApiKey);
+#elif UNITY_ANDROID
+		Gimbal.SetApiKey(androidApiKey);
+#endif
+	}
+	
+	void OnBeaconSighting(string message) {
+		JSONNode node = JSON.Parse(message);
+		BeaconSighting beaconSighting = new BeaconSighting(node);
+		BeaconSighted(beaconSighting);
+	}
+
+	void OnBeginVisit(string message) {
+		JSONNode node = JSON.Parse(message);
+		Visit visit = new Visit(node);
+		BeginVisit(visit);
+	}
+
+	void OnEndVisit(string message) {
+		JSONNode node = JSON.Parse(message);
+		Visit visit = new Visit(node);
+		EndVisit(visit);
 	}
 }

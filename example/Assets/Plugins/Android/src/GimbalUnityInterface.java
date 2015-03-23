@@ -1,4 +1,4 @@
-package org.example.ScriptBridge;
+package com.gimbal.ScriptBridge;
 
 import android.app.Activity;
 import android.util.Log;
@@ -26,6 +26,8 @@ import com.unity3d.player.UnityPlayer;
 
 public class GimbalUnityInterface
 {
+  private final String LOG_ID = "GimbalUnityInterface";
+
   private Activity activity;
   private PlaceEventListener placeEventListener;
   private BeaconEventListener beaconSightingListener;
@@ -33,7 +35,8 @@ public class GimbalUnityInterface
 
   public GimbalUnityInterface(Activity currentActivity)
   {
-    Log.i("GimbalUnityInterface", "currentActivity = " + currentActivity);
+    Log.i(LOG_ID, "GimbalUnityInterface created with activity: " + currentActivity);
+
     activity = currentActivity;
 
     placeEventListener = new PlaceEventListener() {
@@ -51,8 +54,6 @@ public class GimbalUnityInterface
     beaconSightingListener = new BeaconEventListener() {
       @Override
       public void onBeaconSighting(BeaconSighting sighting) {
-        Log.i("GimbalUnityInterface", "sighting!");
-
         try {
           String dateString = convertDate(sighting.getTimeInMillis());
 
@@ -70,8 +71,10 @@ public class GimbalUnityInterface
 
           jsonObj.put("beacon", jsonAdd);
 
+          Log.i(LOG_ID, "Beacon sighted: " + beacon.getIdentifier());
+
           String jsonString = jsonObj.toString();
-          //com.unity3d.player.UnityPlayer.UnitySendMessage("GimbalPlugin", "OnBeaconSighting", jsonString);
+          com.unity3d.player.UnityPlayer.UnitySendMessage("GimbalPlugin", "OnBeaconSighting", jsonString);
         }
         catch (JSONException ex) {
           ex.printStackTrace();
@@ -95,6 +98,8 @@ public class GimbalUnityInterface
 
       jsonObj.put("place", jsonAdd);
 
+      Log.i(LOG_ID, "Places event: " + unityMethod + ", " + place.getIdentifier());
+
       String jsonString = jsonObj.toString();
       com.unity3d.player.UnityPlayer.UnitySendMessage("GimbalPlugin", unityMethod, jsonString);
     }
@@ -107,18 +112,19 @@ public class GimbalUnityInterface
     if (date == null) {
       return "N/A";
     }
+
     DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
     String stringDate = df.format(date);
+
     return stringDate;
   }
 
   public void setApiKey(final String apiKey)
   {
-    Log.i("GimbalUnityInterface", "Set API Key");
+    Log.i(LOG_ID, "Set API Key: " + apiKey);
 
     activity.runOnUiThread(new Runnable() {
       public void run() {
-        Log.i("GimbalUnityInterface", "Set API Key!!!");
         Gimbal.setApiKey(activity.getApplication(), apiKey);
 
         beaconManager = new BeaconManager();
@@ -131,17 +137,16 @@ public class GimbalUnityInterface
 
   public void startBeaconManager()
   {
-    Log.i("GimbalUnityInterface", "Starting...");
+    Log.i(LOG_ID, "Starting Beacon Manager");
 
     if (beaconManager != null) {
-      Log.i("GimbalUnityInterface", "Starting!!!");
       beaconManager.startListening();
     }
   }
 
   public void stopBeaconManager()
   {
-    Log.i("GimbalUnityInterface", "Stop ");
+    Log.i(LOG_ID, "Stopping Beacon Manager");
 
     if (beaconManager != null) {
       beaconManager.stopListening();
@@ -150,7 +155,7 @@ public class GimbalUnityInterface
 
   public void startPlaceManager()
   {
-    Log.i("GimbalUnityInterface", "Start Places");
+    Log.i(LOG_ID, "Starting Place Manager");
 
     activity.runOnUiThread(new Runnable() {
       public void run() {
@@ -161,7 +166,7 @@ public class GimbalUnityInterface
 
   public void stopPlaceManager()
   {
-    Log.i("GimbalUnityInterface", "Stop Places");
+    Log.i(LOG_ID, "Stopping Place Manager");
 
     activity.runOnUiThread(new Runnable() {
       public void run() {

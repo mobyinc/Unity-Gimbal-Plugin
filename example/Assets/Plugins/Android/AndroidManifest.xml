@@ -20,7 +20,7 @@
       <meta-data android:name="unityplayer.ForwardNativeEventsToDalvik" android:value="false" />
     </activity>
   </application>
-  <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="21" />
+  <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="21" />
   <uses-feature android:glEsVersion="0x00020000" />
   <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
   <uses-feature android:name="android.hardware.touchscreen.multitouch" android:required="false" />

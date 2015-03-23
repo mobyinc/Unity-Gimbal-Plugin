@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Runtime.InteropServices;
+using System.Globalization;
+using System;
 
 public class Gimbal {
 	public static void SetApiKey(string apiKey) {
@@ -24,6 +26,12 @@ public class Gimbal {
 
 	public static bool IsMoitoring() {
 		return isMonitoring();
+	}
+
+	public static DateTime ConvertJsonDate(string dateString) {
+		if (dateString == null || dateString == "N/A") return new DateTime();
+
+		return DateTime.ParseExact(dateString, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);;
 	}
 
 #if UNITY_IPHONE
