@@ -1,203 +1,70 @@
 # Unity Gimbal Plugin
 
-The Unity Gimbal Plugin helps provide a way to see Gimbal Beacon Sightings and Visits in Unity Projects deployed as native Android or iOS applications.
+The Unity Gimbal Plugin makes it easy to include Gimbal events in your Unity projects for iOS and Android.
 
 ### Requirements
 
-* Unity 4.6.3f1 (untested on previous versions)
-* Android
-    * Version 4.4.3 or higher
-    * Version of Android equal to API 21
+* Unity 4.6 (untested on previous versions)
+* Android Version 4.4.3 or higher
 * iOS
     * Using Xcode 4.4 or higher
     * Targeting iOS 5.1.1 or higher
     * Using iOS device with Bluetooth 4.0
 
-### Import package into Unity
+### Getting Started
 
-* Open and import the Unity Gimbal Plugin package into your Unity project.
+1. Create a new Unity Project (or open an existing project)
+* Within Unity, switch to iOS and Adroid platform
+* Open and import UnityGimbal.unityPackage into your Unity project
+* Open the example scene /Gimbal/Example.unity
+* Set the example scene as the launch scene (build settings)
+* Select the GimbalPlugin object
+* Paste your iOS and/or Android Api Keys from the Gimbal dashboard into the corresponding fields
+* Ensure the bundle id of your project matches the bundle id set in the Gimbal dashboard for the Api Key
+* Optionally set Beacon Manager and/or Place Manager to start automatically when the scene starts
+* Build and run the project
+* Toggle the managers on if needed
+* Beacon and place info will be logged in the UI of the example scene
 
-### iOS Specific Usage Requirements
+### Adding Gimbal Event to Your Own Classes
 
-* Login to Gimbal developer profile and download Gimbal.framework
-* Place Gimbal.framework in your projects main folder.
+The GimbalBehavior class publishes the following events:
 
-## API
+```
+public event BeaconSightingHandler BeaconSighted
+public event BeginVisitHandler BeginVisit
+public event EndVisitHandler EndVisit
+```
 
-Create a reference to the GimbalBehavoir class in your scene.
+You can easily add and remove event handlers using standard C# techniques. There are two easy eays to get a reference to the GimbalBehavior class: 
 
-    public GimbalBehavior gimbalBehavior;
+- create a public property and then drag the GimbalPlugin object onto it
+- use GetComponent< GimbalBehavior >()
 
-### Setting Up Beacon Sighting Events
-    
-    void Start() {
-        //Create event listener for BeaconSightings
-        gimbalBehavior.BeaconSighted += new GimbalBehavior.BeaconSightingHandler(BeaconSightingFound);
-    }
-    
-    ...
+```
+public GimbalBehavior gimbalBehavior;
 
-    //Create function that will handle BeaconSighting events
-    private void BeaconSightingFound(BeaconSighting sighting) {
-        
-    }
+void Start() {
+    gimbalBehavior.BeaconSighted += new GimbalBehavior.BeaconSightingHandler(BeaconSightingFound);
+}
 
-### Beacon Sighting Properties
+...
 
-#### rssi
+private void BeaconSightingFound(BeaconSighting sighting) {
+    // do things in response to beacon sightings...
+}
+```
 
-Type: int
+### Working with the Gimbal Models
 
-The proximity to the beacon sighting.
+Each of the following models mirrors the fields provided by the native Gimbal SDK.
 
-    private void BeaconSightingFound(BeaconSighting sighting) {
-        int RSSI = sighting.rssi;
-    }
+- BeaconSighting
+- Beacon
+- Visit
+- Place
 
-#### beacon
-
-Type: Beacon
-
-The beacon associated with the beacon sighting.
-
-    private void BeaconSightingFound(BeaconSighting sighting) {
-        Beacon beacon = sighting.beacon;
-    }
-
-#### date
-
-Type: DateTime
-
-The date that this beacon sighting was found.
-
-    private void BeaconSightingFound(BeaconSighting sighting) {
-        Beacon beacon = sighting.date;
-    }
-
-### Beacon Properties
-
-#### batteryLevel
-
-Type: int
-
-The battery level of the beacon.
-
-    private void BeaconSightingFound(BeaconSighting sighting) {
-        int batteryLevel = sighting.beacon.batteryLevel;
-    }
-
-#### iconURL
-
-Type: string
-
-The icon url set for the beacon.
-
-    private void BeaconSightingFound(BeaconSighting sighting) {
-        string iconURL = sighting.beacon.iconURL;
-    }
-
-#### identifier
-
-Type: string
-
-A unique string identifier for the beacon.
-
-    private void BeaconSightingFound(BeaconSighting sighting) {
-        string identifier = sighting.beacon.identifier;
-    }
-
-#### name
-
-Type: string
-
-The name of the beacon.
-
-    private void BeaconSightingFound(BeaconSighting sighting) {
-        string name = sighting.beacon.name;
-    }
-
-#### temperature
-
-Type: int
-
-The temperature detected by the beacon.
-
-    private void BeaconSightingFound(BeaconSighting sighting) {
-        int temperature = sighting.beacon.temperature;
-    }
-
-### Setting up Visit events
-
-    void Start() {
-        //Create event listeners for visits
-        gimbalBehavior.BeginVisit += new GimbalBehavior.BeginVisitHandler(StartedPlaceVisit);
-        gimbalBehavior.EndVisit += new GimbalBehavior.EndVisitHandler(EndedPlaceVisit);
-    }
-    
-    ...
-    
-    //Create functions that will handle Visit events
-    private void StartedPlaceVisit(Visit visit) {
-        
-    }
-
-    private void EndedPlaceVisit(Visit visit) {
-
-    }
-
-### Visit Properties
-
-#### place
-
-Type: Place
-
-The place associated with the visit
-
-    private void StartedPlaceVisit(Visit visit) {
-        Place place = visit.place;
-    }
-
-#### arrivalDate
-
-Type: DateTime
-
-The arrival date associated with the visit.
-
-    private void StartedPlaceVisit(Visit visit) {
-        string arrivalDate = visit.arrivalDate;
-    }
-
-#### departureDate
-
-Type: DateTime
-
-The departure date associated with the visit. This value can equal null if the visit hasn't ended.
-
-    private void StartedPlaceVisit(Visit visit) {
-        string departureDate = visit.departureDate;
-    }
-
-### Place Properties
-
-#### identifier
-
-Type: string
-
-A unique string identifier for the place.
-
-    private void StartedPlaceVisit(Visit visit) {
-        string identifier = visit.place.identifier;
-    }
-
-#### name
-
-Type: string
-
-The name of the place.
-
-    private void StartedPlaceVisit(Visit visit) {
-        string name = visit.place.name;
-    }
+You can read more about the Gimbal SDK on the [Gimbal Developer Site](http://gimbal.com/doc/).
 
 
 
