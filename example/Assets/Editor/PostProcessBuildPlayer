@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+print "PostProcessBuildPlayer STARTUP"
+
 import sys
 import os
 import shutil
@@ -238,7 +240,7 @@ if target_platform == "iPhone":
     file.close()
 
     # read additional plist values
-    file = open(unity_project_path + '/Assets/Gimbal/additional_plist_values.plist', 'r')
+    file = open(unity_project_path + '/Assets/gimbalsdk/Gimbal/additional_plist_values.plist', 'r')
     additional_plist_values = file.read()
     file.close
 
@@ -249,7 +251,7 @@ if target_platform == "iPhone":
     file.close()
 
     # copy Gimbal framework file
-    gimbal_framework_path = unity_project_path + '/Assets/WebPlayerTemplates/Gimbal.framework'
+    gimbal_framework_path = unity_project_path + '/Assets/gimbalsdk/WebPlayerTemplates/Gimbal.framework'
     gimbal_framework_destination_path = sys.argv[1] + '/Gimbal.framework'
 
     print "Copying Gimbal framework from " + gimbal_framework_path + ' to ' + gimbal_framework_destination_path
