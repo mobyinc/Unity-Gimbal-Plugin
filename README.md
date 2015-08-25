@@ -14,15 +14,16 @@ The Unity Gimbal Plugin makes it easy to include Gimbal events in your Unity pro
 ### Getting Started
 
 1. Create a new Unity Project (or open an existing project)
-* Within Unity, switch to iOS and Adroid platform
+* Within Unity, switch to iOS or Android platform
 * Open and import UnityGimbal.unityPackage into your Unity project
-* Open the example scene /Gimbal/Example.unity
+* Open the example scene /gimbalsdk/Gimbal/Example.unity
 * Set the example scene as the launch scene (build settings)
 * Select the GimbalPlugin object
-* Paste your iOS and/or Android Api Keys from the Gimbal dashboard into the corresponding fields
+* If you haven't already, sign up for a developer account with Gimbal and register your becaons and your add bundle id. See: [Gimbal Developers](https://manager.gimbal.com/login/users/sign_up)
+* Paste your iOS and/or Android Api Keys from the Gimbal dashboard into the corresponding fields on the GimbalPlugin behavior
 * Ensure the bundle id of your project matches the bundle id set in the Gimbal dashboard for the Api Key
 * Optionally set Beacon Manager and/or Place Manager to start automatically when the scene starts
-* Build and run the project
+* Build and run the project **on a device** (the beacons will not work in the simulator)
 * Toggle the managers on if needed
 * Beacon and place info will be logged in the UI of the example scene
 
