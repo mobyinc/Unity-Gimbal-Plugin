@@ -4,11 +4,11 @@ The Unity Gimbal Plugin makes it easy to include Gimbal events in your Unity pro
 
 ### Requirements
 
-* Unity 4.6 (untested on previous versions)
+* Unity 5.3 (untested on previous versions)
 * Android Version 4.4.3 or higher
 * iOS
-    * Using Xcode 4.4 or higher
-    * Targeting iOS 5.1.1 or higher
+    * Using Xcode 7.3 or higher
+    * Targeting iOS 8.0 or higher
     * Using iOS device with Bluetooth 4.0
 
 ### Getting Started
