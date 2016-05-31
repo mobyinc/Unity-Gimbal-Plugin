@@ -3,7 +3,7 @@
 # Dex errors are produced during Unity build process when compiling with Java > 1.6
 echo ""
 echo "Building Interface..."
-/Library/Java/JavaVirtualMachines/1.6.0_65-b14-462.jdk/Contents/Home/bin/javac GimbalUnityInterface.java -cp "$ANDROID_SDK_ROOT/platforms/android-21/android.jar:$ANDROID_SDK_ROOT/extras/android/support/v4/android-support-v4.jar:../gimbal.jar:gimbal-dev-logging.jar:spring-android-core-1.0.1.RELEASE.jar:spring-android-rest-template-1.0.1.RELEASE.jar:/Applications/Unity/Unity.app/Contents/PlaybackEngines/AndroidPlayer/release/bin/classes.jar" -d .
+/Library/Java/JavaVirtualMachines/1.6.0_65-b14-462.jdk/Contents/Home/bin/javac GimbalUnityInterface.java -cp "$ANDROID_SDK_ROOT/platforms/android-23/android.jar:$ANDROID_SDK_ROOT/extras/android/support/v13/android-support-v13.jar:../gimbal.jar:gimbal-slf4j-impl.jar:slf4j-api.jar:/Applications/Unity/PlaybackEngines/AndroidPlayer/Variations/mono/Release/Classes/classes.jar" -d .
 
 echo ""
 echo "Signature dump of Interface..."

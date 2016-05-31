@@ -26,7 +26,7 @@ public class ReplacementBuildPostprocessor : MonoBehaviour
         process.StartInfo.FileName = "perl";
         process.StartInfo.UseShellExecute = false;
         process.StartInfo.RedirectStandardOutput = true;
-        process.StartInfo.Arguments = Application.dataPath + "/Editor/PostprocessBuildPlayer" + " " + arguments;
+        process.StartInfo.Arguments = Application.dataPath + "/Editor/PostProcessBuildPlayer" + " " + arguments;
         process.Start();
 
         // Synchronously read the standard output of the spawned process.
